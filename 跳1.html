@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <title>.</title>
+  <link href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.2.1/tcplayer.min.css" rel="stylesheet">
+  <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.2.1/libs/hls.min.0.13.2m.js"></script>
+  <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.5.0/tcplayer.v4.5.0.min.js"></script>
+  <script src="https://note.youdao.com/yws/api/personal/file//2ADA0E141C9D415FBACE00D34867D2CB?method=download&inline=true&shareKey=c2d5c4473000f1a7c1008e35f3edccaa&laye.mim.css"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .video-block {
+      margin-bottom: 40px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 20px;
+    }
+    .video-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: block;
+      background-color: lightskyblue;
+      padding: 5px;
+    }
+    .tcplayer-container {
+      margin: 0 auto;
+      width: 1080px;
+      height: 600px;
+      max-width: 100%;
+      display: none;
+    }
+    .jump-btn {
+      display: none;
+      margin: 10px auto;
+      padding: 8px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: orange;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      width: auto;
+      min-width: 200px;
+      text-align: center;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">加载中...</div>
+  <script>
+    const players = [];
+    let currentPlayingIndex = null;
+
+    function getLocalData() {
+      return {
+        data_mp4: [
+          { title: "吃🍉我尼🐎   好久没见这么狠的萿了", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.162/1749707618634275086/b11c994723064b6e2f443d663ed71a10/5.mp4" },
+          { title: "吃🍉老冰棍  塞 逼", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.162/1749707844694808157/b7ba29e1f41da2ced094028130616cc5/5.mp4" },
+          { title: "吃🍉？??这是什么？ JK  被潅腸了？. ", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.162/1749649208760170126/eac5ed70122116a046887c0d035cf80c/3.mp4" },
+          { title: "吃🍉ktv 搔 🐔.", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.162/1749648864266977868/c4dbd8296a864444a57b31e041871a90/5.mp4" },
+          { title: "吃🍉爪🗡大戏  每日一爪 ", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749609656510288666/d5cda0b8d83284b012e1b60fa9c8e8fb/0.mp4" },
+          { title: "吃🍉这刁毛跟啊三学的吧🌚", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749609988047787528/03123f2275d9edba58af4816f38ea5a3/1.mp4" },
+          { title: "吃🍉路边两个男的 /*咑泇 🤼‍♀",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749610195637290624/c45bde2e9385fe034c7108df26c589e6/3.mp4" },
+          { title: "吃🍉东莞鬼火少年，父愁者联盟", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749561582062503569/3b579aa2cfea43272a45a4cb661fe2a0/0.mp4" },
+          { title: "吃🍉骑逝精神  女骑士，衣服都烧没了.", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749561966145321427/f915a4f8f1cd1bd122a3969de8d071f3/0.mp4" },
+          { title: "吃🍉群友探店！高颜值🐔  詀街 100！！！",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749562322764224892/98d78c9cfbc8df19fb041246c689ed4f/2.mp4" },
+          { title: "吃🍉精神小妹 纹身 /*①线天/**  ..b湿了",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749522337600287635/6281c3e16c48977c525c46b82a269c38/1.mp4" },
+          { title: "吃🍉抖音帶貨    肌膜抢锤b 湿了湿了......", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749494874609132519/d9820252553a0e2c96fbca0f4dbc94e0/0.mp4" },
+          { title: "吃🍉挺猛的，一👊三，说那三个是0.", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/119.237.245.203/1749496064918844497/f5327544fd4f9b0da3d34200f54d0b98/2.mp4" },
+          { title: "吃🍉一群精神小妹 街头打架！！！",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749496212671803019/0e41f0322a2075639d216b75823c7802/1.mp4" },
+          { title: "吃🍉集美麦银 被👮‍.爪了...",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749441267086983689/99fe7019a1fd583a6d4c9b18308d2ee4/0.mp4" },
+          { title: "吃🍉大象 的大🐔🎱",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749441396974742664/af2c551b7290c6cc7adda4205b1cd7f6/12.mp4" },
+          { title: "吃🍉鬼火少年 路锥 袭击 🚓", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749441740500497691/c8b25c28dc44e9d6414182fbc8f18a23/23.mp4" },
+          { title: "吃🍉太坏了 别人正准备xx....你给破坏了", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749392246534399731/f70fb902b77622825d7d052427a3e0ff/0.mp4" },
+          { title: "吃🍉路边pk👊打架！！！",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749392073691911298/42a02dcfee5640e4c815fbdac44c87f4/2.mp4" },
+          { title: "吃🍉🔥抖音热🍉  小伙去西藏旅游  被🐻吃了......脸都被掏空了..【慎点❗】",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.84.136/1749287198587600419/3b4f1ef927d67d8259eaeb876589a8d8/1.mp4" },
+          { title: "吃🍉筷手  紸譒发搔了...真空", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.79.11/1749218824771745955/c93b0cad1665ce87ca86ce3f51d86733/0.mp4" },
+          { title: "吃🍉精神小妹👊打架，衣服都鐁了.", url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/119.237.245.203/1749217771630243918/f3c93ec2eeedbf91ccb1ade8e06a1328/0.mp4" },
+          { title: "吃🍉杆子 穿透 后背！骑帅别骑快！！🛵骑士",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.79.11/1749180611361278025/74361b175e5d13886e3f416c1ee2cdcc/0.mp4" },
+          { title: "吃🍉街头问答。眼镜妹就是够反❌的",url: "https://coscdn.myjujing.com/cvd/customer/fileUploadv2/123.174.79.11/1749181852514588635/086b94a9ebd25a845ae0a9a00a8ed192/0.mp4" },
+        ],
+        btn_text: '加入吃瓜微信群',
+        btn_link: 'https://shad.samr.gov.cn/sandstone/sp_data/007b3d7d1fc04f4eb5b69f09682d61ac.png',
+        title: '近期失效合集'
+      };
+    }
+
+    async function loadVideos() {
+      const data = getLocalData();
+
+      document.title = data.title;
+      const container = document.getElementById('content');
+      container.innerHTML = '';
+
+      data.data_mp4.forEach((item, index) => {
+        const videoId = "tcplayer-container-" + index;
+        const block = document.createElement('div');
+        block.className = 'video-block';
+        block.innerHTML = `
+          <span class="video-title" data-index="${index}">${index + 1}. ${item.title}</span>
+          <video id="${videoId}" class="tcplayer-container" preload="auto" playsinline webkit-playsinline></video>
+          <button class="jump-btn">${data.btn_text}</button>
+        `;
+        container.appendChild(block);
+
+        const jumpBtn = block.querySelector('.jump-btn');
+        jumpBtn.onclick = () => window.location.href = data.btn_link;
+
+        setTimeout(() => {
+          const player = TCPlayer(videoId, { reportable: false });
+          player.src(item.url);
+          player.pause();
+          players[index] = player;
+        }, 0);
+      });
+
+      const titleElems = document.querySelectorAll('.video-title');
+      titleElems.forEach(titleElem => {
+        titleElem.addEventListener('click', function () {
+          const index = parseInt(this.getAttribute('data-index'));
+          if (currentPlayingIndex === index) return;
+
+          if (currentPlayingIndex !== null) {
+            const prevVideoElem = document.getElementById("tcplayer-container-" + currentPlayingIndex);
+            if (prevVideoElem) prevVideoElem.style.display = 'none';
+
+            const prevBlock = prevVideoElem ? prevVideoElem.parentElement : null;
+            if (prevBlock) {
+              const prevBtn = prevBlock.querySelector('.jump-btn');
+              if (prevBtn) prevBtn.style.display = 'none';
+            }
+
+            if (players[currentPlayingIndex]) {
+              players[currentPlayingIndex].pause();
+            }
+          }
+
+          const currentVideoElem = document.getElementById("tcplayer-container-" + index);
+          if (currentVideoElem) currentVideoElem.style.display = 'block';
+
+          const currentBlock = this.parentElement;
+          currentBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          const jumpBtn = currentBlock.querySelector('.jump-btn');
+          if (jumpBtn) jumpBtn.style.display = 'block';
+
+          if (players[index]) players[index].play();
+          currentPlayingIndex = index;
+        });
+      });
+    }
+
+    async function init() {
+      await loadVideos();
+    }
+
+    init();
+  </script>
+</body>
+</html>
